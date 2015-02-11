@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 public class XmiFileReader {
  
     public static void main(String[] args) {
-        final String fileName = "project4.xmi";
+        final String fileName = "Example.xmi";
         org.jdom2.Document jdomDoc;
         try {
             //we can create JDOM Document from DOM, SAX and STAX Parser Builder classes

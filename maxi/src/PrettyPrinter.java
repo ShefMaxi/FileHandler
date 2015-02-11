@@ -22,6 +22,7 @@ public class PrettyPrinter {
         Element root = jdomDoc.getRootElement();
       //  Element Node=new Element ();
         DocumentParser parser=new DocumentParser(null);
+        parser.parse("123");
         parser.parse("project11.xmi");
         Document doc=parser.getDocument();
         List<Element> childrenElement = root.getChildren();
