@@ -9,7 +9,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 public class ExampleXMIDriver {
-
+	// add .jar
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
