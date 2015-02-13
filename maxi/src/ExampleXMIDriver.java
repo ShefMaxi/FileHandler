@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.lang.model.element.PackageElement;
 
 import org.jdom2.Attribute;
 import org.jdom2.Document;
@@ -34,23 +37,30 @@ public class ExampleXMIDriver {
 		
 		
 		// print all attributes
-		ExampleXMIDriver.printAttributes(rootElement.getAttributes());
+		//ExampleXMIDriver.printAttributes(rootElement.getAttributes());
 		System.out.println("\n");
 		
 		// get all children element
 		List<Element> childrenElements = rootElement.getChildren();
+		ArrayList list = new ArrayList();
 		
 		// print the attributes of all elements
 		for (Element element : childrenElements) {
+			if (element.getName().equals("packagedElement")){
 			System.out.println("\nnext element: ");
 			ExampleXMIDriver.printAttributes(element.getAttributes());
 			List<Element> nextChildrenElements = element.getChildren();
 			if (nextChildrenElements.size() > 0) {
 				for (Element element2 : nextChildrenElements) {
+					if (element2.getName().equals("ownedEnd")){
 					System.out.println("");
 					System.out.println(element2.getName());
-					ExampleXMIDriver.printAttributes(element2.getAttributes());
-					
+					//if(element2.getAttribute().equals("type"))
+						System.out.println(element2.getAttributeValue("type"));
+						
+					//ExampleXMIDriver.printAttributes(element2.getAttributes());
+					}
+				}
 				}
 			}
 			
