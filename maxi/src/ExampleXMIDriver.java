@@ -1,3 +1,5 @@
+import PackagedElements.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,12 +14,14 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 public class ExampleXMIDriver {
+	static List<Attribute> allList = new ArrayList<Attribute>();
 	// add .jar
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
 			ExampleXMIDriver.readXMIFile();
 			System.out.println("READ.");
+			//ExampleXMIDriver.print(list);
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Can't read.");
@@ -42,31 +46,79 @@ public class ExampleXMIDriver {
 		
 		// get all children element
 		List<Element> childrenElements = rootElement.getChildren();
-		ArrayList list = new ArrayList();
+		//List<String> list = new ArrayList<String>();
 		
 		// print the attributes of all elements
 		for (Element element : childrenElements) {
 			if (element.getName().equals("packagedElement")){
 			System.out.println("\nnext element: ");
-			ExampleXMIDriver.printAttributes(element.getAttributes());
-			List<Element> nextChildrenElements = element.getChildren();
+			//ExampleXMIDriver.printAttributes(element.getAttributes());
+			//////////////////////////////////////////////////////////////////
+			List<Attribute> list = element.getAttributes();
+			
+			
+			String[] attributeArray = new String[list.size()];
+			for (int i = 0; i < list.size(); ++i) {
+				Attribute attr = (Attribute) list.get(i);
+				String attrName = attr.getName();
+				String attrValue = attr.getValue();
+				attributeArray[i] = attrValue;
+				//allList.add(attr);
+
+				
+				//allList.add(attrName);
+				//allList.add(attrValue);
+				//System.out.println("Attribute : " + attrName + attrValue );
+			}
+			List<PackagedElement> eList = new ArrayList<PackagedElement>();
+			if (attributeArray[0].equals("uml:Association")){
+				/////////////
+				String[] ownedEnd = new String[2];
+				int i=0;
+				List<Element> nextChildrenElements = element.getChildren();
+				if (nextChildrenElements.size() > 0) {
+					for (Element element2 : nextChildrenElements) {
+						if (element2.getName().equals("ownedEnd")){
+							ownedEnd[i] = element2.getAttributeValue("type");
+							i++;
+						}
+					}
+				}
+				/////////
+				eList.add(new AssociationElement( attributeArray[1], ownedEnd[0], ownedEnd[1]));
+			}
+			else{
+				eList.add(new UMLElement(attributeArray[0], attributeArray[1], attributeArray[2]));
+			}
+			
+			
+			System.out.println(eList.get(eList.size() - 1));
+			//list=allList;
+			//return allList;
+		//}
+			
+			
+			
+			
+			
+			
+			//////////////////////////////////////////////////
+			/*List<Element> nextChildrenElements = element.getChildren();
 			if (nextChildrenElements.size() > 0) {
 				for (Element element2 : nextChildrenElements) {
 					if (element2.getName().equals("ownedEnd")){
 					System.out.println("");
-					System.out.println(element2.getName());
-					//if(element2.getAttribute().equals("type"))
-						System.out.println(element2.getAttributeValue("type"));
-						
-					//ExampleXMIDriver.printAttributes(element2.getAttributes());
+						//allList.add(element2.getAttributeValue("type"));
+						//System.out.println(allList);
 					}
 				}
-				}
+				}*/
 			}
 			
 		}
 		
 		return childrenElements;
+		//return list;
 	}
 	
 	
@@ -74,24 +126,53 @@ public class ExampleXMIDriver {
 	
 	//--------------------------------------------------------------------------------
 
-	public static void printAttributes(List<Attribute> list) {
+	/*public static List<Attribute>printAttributes(List<Attribute> list) {
+		//list=list;
+		String[] attributeArray = new String[list.size()];
 		for (int i = 0; i < list.size(); ++i) {
 			Attribute attr = (Attribute) list.get(i);
 			String attrName = attr.getName();
 			String attrValue = attr.getValue();
-			System.out.println("Attribute : " + attrName + " = " + attrValue);
+			attributeArray[i] = attrValue;
+			//allList.add(attr);
+
+			
+			//allList.add(attrName);
+			//allList.add(attrValue);
+			//System.out.println("Attribute : " + attrName + attrValue );
 		}
+		List<PackagedElement> eList = new ArrayList<PackagedElement>();
+		if (attributeArray[0].equals("uml:Association")){
+			
+			eList.add(new AssociationElement( attributeArray[1], "1", "2"));
+		}
+		else{
+			eList.add(new UMLElement(attributeArray[0], attributeArray[1], attributeArray[2]));
+		}
+		
+		
+		System.out.println(eList.get(eList.size() - 1));
+		list=allList;
+		return allList;
+	}*/
+
+	private static void addAll(List<String> string) {
+		// TODO Auto-generated method stub
+		 List<String> eList = new ArrayList<String>();
+		 	
+	
 	}
 
 	public static void printElements(List<Element> list) {
 		for (int i = 0; i < list.size(); ++i) {
 			Element ele = list.get(i);
 			String attrName = ele.getName();
-			System.out.println("Element : " + attrName);
+			//System.out.println("Element : " + attrName);
 		}
 	}
 
 	public static void print(String str) {
+		//str=list;
 		System.out.println(str);
 	}
 }
